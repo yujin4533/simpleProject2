@@ -8,11 +8,11 @@
 #### 메모장
 #### 소켓 채팅
 
-
--- O.S : Window 10 
--- Language : Java SE JDK 1.8 / JSP & Servlet
-  HTML5, Javascript, CSS / jQuery 
-  BootStrap / Ajax(JSON, XML)
--- WAS : Apache Tomcat 1.8
--- DB : Oracle XE 11g
--- Developer Tool : Spring Tool Suite, Git, MyBatis, Oracle SQL Developer
+<br>
+-- O.S : Window 10 <br>
+-- Language : Java SE JDK 1.8 / JSP & Servlet <br>
+  HTML5, Javascript, CSS / jQuery <br>
+  BootStrap / Ajax(JSON, XML) <br>
+-- WAS : Apache Tomcat 1.8 <br>
+-- DB : Oracle XE 11g <br>
+-- Developer Tool : Spring Tool Suite, Git, MyBatis, Oracle SQL Developer <br>
