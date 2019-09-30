@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mainMapper">
+
+	<select id="getUserIP" parameterType="String" resultType="int">
+		SELECT count(userip)
+		FROM p2header
+		WHERE userip=#{userip}
+	</select>
+	
+	<insert id="setUserIP" parameterType="String">
+		INSERT INTO p2header(userIP) VALUES(#{userip})
+	</insert>
+
+	<select id="getHeader" parameterType="String" resultType="com.simple.project2.mainVO">
+		SELECT NVL(headertitle1,'NOTITLE') headerTitle1, NVL(headertitle2,'NOTITLE') headerTitle2, NVL(headercontent,'NOCONTENT') headerContent 
+		FROM p2header 
+		WHERE userIp=#{userIp}
+	</select>
+	
+	<insert id="setRecord" parameterType="com.simple.project2.mainVO">
+		INSERT INTO p2record(userIP,startTime,endTime) VALUES(#{userIP},to_date(#{startTime},'YY/MM/DD/HH24/MI/SS'),to_date(#{endTime},'YY/MM/DD/HH24/MI/SS'))
+	</insert>
+	
+	<select id="getRecordCnt" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+        FROM p2record 
+        WHERE userip=#{userIP}
+	</select>
+	
+	<select id="getRecord" parameterType="com.simple.project2.mainVO" resultType="com.simple.project2.mainVO">
+		SELECT *
+		FROM(
+			SELECT ROW_NUMBER() OVER(ORDER BY endtime DESC) NUM, to_char(starttime,'yyyy/mm/dd/hh24:mi:ss') startTime,to_char(endtime,'yyyy/mm/dd/hh24:mi:ss') endTime
+			FROM p2record 
+	        WHERE userip=#{userIP}
+		)
+		WHERE NUM BETWEEN #{startRno} AND #{endRno}
+	</select>
+	
+	<select id="getBoardList" parameterType="com.simple.project2.mainVO" resultType="com.simple.project2.mainVO">
+		SELECT seq, boardTitle, boardContent, to_char(boardDate,'yyyy/mm/dd') boardDate
+		FROM p2board
+		WHERE userip=#{userIP}
+		ORDER BY seq DESC
+	</select>
+	
+	<insert id="setBoard" parameterType="com.simple.project2.mainVO">
+		INSERT INTO p2board(userIP,seq,boardTitle,boardContent) VALUES(#{userIP},seq_p2board.nextval,#{boardTitle},#{boardContent})
+	</insert>
+	
+	<update id="setBoardUpdate" parameterType="com.simple.project2.mainVO">
+		UPDATE p2board
+		SET boardTitle=#{boardTitle}, boardContent=#{boardContent}
+		WHERE userIP=#{userIP} and seq=#{seq}
+	</update>
+	
+	<select id="getBoard" parameterType="String" resultType="com.simple.project2.mainVO">
+		SELECT seq, boardTitle, boardContent
+		FROM p2board
+		WHERE seq=#{seq}
+	</select>
+	
+	<insert id="setCalendar" parameterType="com.simple.project2.mainVO">
+		INSERT INTO p2calendar(userIP,seq,calendarDate,calendarTitle,calendarContent) 
+		VALUES(#{userIP},seq_p2calendar.nextval,#{calendarDate},#{calendarTitle},#{calendarContent})
+	</insert>
+	
+	<update id="setTitle" parameterType="com.simple.project2.mainVO">
+		UPDATE p2header
+		SET headerTitle1=#{headerTitle1}, headerTitle2=#{headerTitle2}, headerContent=#{headerContent}
+		WHERE userIP=#{userIP}
+	</update>
+
+	<select id="getCalendarList" parameterType="String" resultType="com.simple.project2.mainVO">
+		SELECT seq, calendarTitle, calendarContent, to_char(calendarDate,'yyyy/mm/dd') calendarDate
+		FROM p2calendar
+		WHERE userip=#{userIP}
+		ORDER BY calendarDate DESC
+	</select>	
+
+</mapper>
